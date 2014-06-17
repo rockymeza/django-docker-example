@@ -1,0 +1,14 @@
+db:
+  image: paintedfox/postgresql
+  environment:
+    USER: docker
+    PASS: docker
+    DB: docker
+web:
+  build: .
+  links:
+    - db
+  ports:
+    - "8000:8080"
+  volumes:
+    - .:/app
