@@ -12,3 +12,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djangodocker.settings")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+
+# Use dj-static
+from dj_static import Cling
+application = Cling(application)

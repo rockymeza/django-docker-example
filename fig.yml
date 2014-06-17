@@ -12,3 +12,7 @@ web:
     - "8000:8080"
   volumes:
     - .:/app
+    # The following line is optional, but allows us to put the staticfiles at
+    # an arbitrary location and serve them from something like nginx.
+    - /tmp/static:/data/static
+  command: /env/bin/uwsgi --python-autoreload --ini uwsgi.ini
