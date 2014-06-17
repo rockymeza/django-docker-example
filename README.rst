@@ -32,7 +32,7 @@ First run::
 This will build the web image.  Internally, the web image relies on the
 ``google/python`` image, but it also installs ``libpq-dev`` package so that we
 can install psycopg2.  I originally wanted to use ``google/python-runtime``,
-but I don't think it would be possible[#f1].
+but I don't think it would be possible [#f1]_.
 
 Next we want to get our database container up and running, we can run this::
 
