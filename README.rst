@@ -55,7 +55,7 @@ After that we should probably migrate our database::
     $ docker run --rm -ti \
              --link postgres:db_1 \
              djangodocker_web \
-             syncdb
+             /env/bin/python syncdb
 
 I called that using the ``--rm`` option because I don't want to keep littering
 everything with all of these one-off containers.  I think that's correct.  The
@@ -64,17 +64,6 @@ migration asks you if you want to create a superuser, you need to have those.
 Now we can run our web container::
 
     $ docker run --rm \
-             --link postgres:db_1 \
-             -p 8000:8080 \
-             djangodocker_web
-
-At first I thought this was broken because I didn't see any of the server start
-up messages that Django normally spits out, but then I went to
-http://localhost:8000/ and saw that it was working.  If you want to see the
-start up messages, you can pass ``-t`` to the run command and then Django will
-spit the messages out at you::
-
-    $ docker run --rm -t \
              --link postgres:db_1 \
              -p 8000:8080 \
              djangodocker_web
@@ -91,7 +80,8 @@ to mount my source code into the image, which Docker makes quite easy.::
              --link postgres:db_1 \
              -p 8000:8080 \
              -v /abs/path/to/dir/:/app \
-             djangodocker_web
+             djangodocker_web \
+             /env/bin/uwsgi --python-autoreload --ini uwsgi.ini
 
 Now whenever I change the code, the changes appear in the browser.
 
