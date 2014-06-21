@@ -4,10 +4,15 @@ db:
     USER: docker
     PASS: docker
     DB: docker
+rabbitmq:
+  image: tutum/rabbitmq
+  environment:
+    RABBITMQ_PASS: docker
 web:
   build: .
   links:
     - db
+    - rabbitmq
   ports:
     - "8000:8080"
   volumes:
@@ -16,3 +21,29 @@ web:
     # an arbitrary location and serve them from something like nginx.
     - /tmp/static:/data/static
   command: /env/bin/uwsgi --python-autoreload --ini uwsgi.ini
+worker:
+  build: .
+  environment:
+    # Celery doesn't like the idea of running the workers as root when using
+    # pickle as a serialization format, which is smart.  Right now the pickle
+    # format is disabled, but if you wanted to use it, you could uncomment the
+    # following line to force celery to run as root.
+    # C_FORCE_ROOT: 1
+  links:
+    - db
+    - rabbitmq
+  volumes:
+    - .:/app
+    # The following line is optional, but allows us to put the staticfiles at
+    # an arbitrary location and serve them from something like nginx.
+    - /tmp/static:/data/static
+  command: /env/bin/celery -A djangodocker worker -l info
+flower:
+  build: .
+  links:
+    - rabbitmq
+  ports:
+    - "5555:5555"
+  volumes:
+    - .:/app
+  command: /env/bin/celery -A djangodocker flower

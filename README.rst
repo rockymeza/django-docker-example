@@ -86,4 +86,25 @@ to mount my source code into the image, which Docker makes quite easy.::
 Now whenever I change the code, the changes appear in the browser.
 
 
+Celery
+------
+
+I added celery to the mix too.  There are three new services to deal with the
+celery tasks.
+
+1.  ``tutum/rabbitmq`` is providing the broker.
+2.  There is a worker service that consumes the tasks.
+3.  (Optional) I added a flower service that runs on port 5555 for monitoring
+    everything.
+
+I added a small view in the django project that will add a task to the queue.
+If you want to see it in action, you can
+
+1.  ``$ fig up`` -- turns everything on
+2.  ``$ fig logs`` -- so you can see the results.
+3.  In one browser tab go to http://localhost:5555 to see the flower service.
+    You should probably be able to see the worker then.
+4.  In another browser go to http://localhost:8000/celery/ to trigger tasks.
+
+
 .. [#f1] Let's see what happens with this issue: <https://github.com/GoogleCloudPlatform/python-docker/issues/7>.
