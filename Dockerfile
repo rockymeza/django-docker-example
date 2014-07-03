@@ -9,7 +9,7 @@ RUN virtualenv /env
 
 # [Optional] If you are building from within China, I recommend uncommenting
 # this line.
-ADD chinese-sources.list /etc/apt/sources.list
+# ADD chinese-sources.list /etc/apt/sources.list
 
 # Required for psycopg2
 RUN DEBIAN_FRONTEND=noninteractive && \
