@@ -60,9 +60,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'docker',
         'USER': 'docker',
-        'PASSWORD': 'docker',
-        'HOST': os.environ['DB_1_PORT_5432_TCP_ADDR'],
-        'PORT': os.environ['DB_1_PORT_5432_TCP_PORT'],
+        # I manually copied the POSTGRES_PASS from the postgres logs to the env
+        # variables for this container.
+        'PASSWORD': os.environ['POSTGRES_PASS'],
+        'HOST': os.environ['POSTGRESQL_1_PORT_5432_TCP_ADDR'],
+        'PORT': os.environ['POSTGRESQL_1_PORT_5432_TCP_PORT'],
     }
 }
 
